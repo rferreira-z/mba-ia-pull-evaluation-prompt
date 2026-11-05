@@ -105,6 +105,18 @@ O v1 foi avaliado com as mesmas funções de `src/evaluate.py` (`run_experiment`
 - Link público do dataset com os experimentos: _pendente de compartilhamento_
 - Tracing de 3 exemplos (simples, médio e complexo): _pendente de compartilhamento_
 
+**Experimento do v2:** os 15 exemplos com as 5 notas gravadas como feedback (médias no cabeçalho: clarity 0.89, correctness 0.92, f1_score 0.90, helpfulness 0.92, precision 0.95).
+
+![Experimento v2 no LangSmith](docs/evidencias/04-langsmith-experimento-v2.png)
+
+**v1 × v2 lado a lado:** o v2 (B, rosa) supera o v1 (A, verde) nas 5 métricas. A coluna de saídas mostra o principal problema do v1: sem formato definido, as respostas começam com Markdown e rótulos que a referência não tem (`**User Story:** --- **Título:** ...`). O v2 produz o texto no mesmo formato da referência (`Como um ..., eu quero ..., para que ...`). O custo é maior no v2 (prompt com exemplos few-shot), mas fica abaixo de US$ 0,02 para os 15 exemplos.
+
+![Comparação v1 x v2 no LangSmith](docs/evidencias/05-langsmith-comparacao-v1-v2.png)
+
+**Dataset `mba-ia-pull-evaluation-prompt-eval`:** os dois experimentos rodados contra os 15 exemplos.
+
+![Dataset e experimentos no LangSmith](docs/evidencias/06-langsmith-dataset-experimentos.png)
+
 ### Processo de iteração
 
 Antes de publicar, avaliei o prompt localmente com os mesmos juízes de `src/metrics.py` (mesmo dataset, `gpt-4.1-mini` para gerar e `gpt-4.1` para avaliar, `temperature=0`). Cada linha é a média dos 15 exemplos:
