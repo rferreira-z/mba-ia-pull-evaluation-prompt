@@ -102,8 +102,11 @@ O v1 foi avaliado com as mesmas funções de `src/evaluate.py` (`run_experiment`
 
 - Prompt publicado (público): [`rferreira-z/bug_to_user_story_v2`](https://smith.langchain.com/hub/rferreira-z/bug_to_user_story_v2)
 - Dataset de avaliação: `mba-ia-pull-evaluation-prompt-eval` (15 exemplos), com os experimentos `rferreira-z-bug_to_user_story_v2-c65ebd34` (v2) e o da linha de base v1
-- Link público do dataset com os experimentos: _pendente de compartilhamento_
-- Tracing de 3 exemplos (simples, médio e complexo): _pendente de compartilhamento_
+- **Link público do dataset com os experimentos:** <https://smith.langchain.com/public/b21bbb56-7fd5-4d67-a419-482c87a85009/d>
+- **Tracing de 3 exemplos do v2** (públicos, abrem sem login):
+  - [Simples: botão "Adicionar ao carrinho" (linha 4)](https://smith.langchain.com/public/b21bbb56-7fd5-4d67-a419-482c87a85009/d/compare?selectedSessions=f778c35c-1080-4913-9342-6bde88aa78b1&trace=01a1ac82-d1a4-7b6a-99a6-da912497b803&peeked_trace_id=01a1ac82-d1a4-7b6a-99a6-da912497b803)
+  - [Médio: `GET /api/users/:id` sem validar permissões (linha 8)](https://smith.langchain.com/public/b21bbb56-7fd5-4d67-a419-482c87a85009/d/compare?selectedSessions=f778c35c-1080-4913-9342-6bde88aa78b1&trace=01a1ac82-971a-79be-9472-f167496b6f70&peeked_trace_id=01a1ac82-971a-79be-9472-f167496b6f70)
+  - [Complexo: checkout com 4 falhas críticas (linha 13)](https://smith.langchain.com/public/b21bbb56-7fd5-4d67-a419-482c87a85009/d/compare?selectedSessions=f778c35c-1080-4913-9342-6bde88aa78b1&trace=01a1ac82-57d6-7466-8a58-da7d14434654&peeked_trace_id=01a1ac82-57d6-7466-8a58-da7d14434654)
 
 **Experimento do v2:** os 15 exemplos com as 5 notas gravadas como feedback (médias no cabeçalho: clarity 0.89, correctness 0.92, f1_score 0.90, helpfulness 0.92, precision 0.95).
 
@@ -116,6 +119,22 @@ O v1 foi avaliado com as mesmas funções de `src/evaluate.py` (`run_experiment`
 **Dataset `mba-ia-pull-evaluation-prompt-eval`:** os dois experimentos rodados contra os 15 exemplos.
 
 ![Dataset e experimentos no LangSmith](docs/evidencias/06-langsmith-dataset-experimentos.png)
+
+#### Tracing detalhado
+
+Cada trace mostra a árvore de execução (`Target` → `ChatOpenAI gpt-4.1-mini`), as 5 notas gravadas como feedback, o relato de entrada, a resposta gerada e a referência. Os três cobrem os três modelos de saída do prompt:
+
+**Simples (linha 4):** story e 5 critérios, sem seções extras. Notas: clarity 0.85, correctness 0.965, f1 1.00, helpfulness 0.89, precision 0.93.
+
+![Trace simples](docs/evidencias/07-trace-simples.png)
+
+**Médio (linha 8):** critérios, "Critérios Técnicos" (HTTP 403) e "Contexto Técnico" com os dados do relato. Notas: clarity 0.95, correctness 0.96, f1 0.92, helpfulness 0.975, precision 1.00.
+
+![Trace médio](docs/evidencias/08-trace-medio.png)
+
+**Complexo (linha 13):** relato com 4 problemas, respondido no modelo com seções `=== USER STORY PRINCIPAL ===` etc. Notas: clarity 0.93, correctness 0.96, f1 0.96, helpfulness 0.95, precision 0.97.
+
+![Trace complexo](docs/evidencias/09-trace-complexo.png)
 
 ### Processo de iteração
 
